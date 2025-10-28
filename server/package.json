@@ -13,18 +13,29 @@
     }
   },
   "scripts": {
+    "dev": "nodemon --exec ts-node src/index.ts",
     "build": "npx tsc",
-    "start": "dist/index.js"
+    "start": "node dist/index.js",
+    "test": "jest",
+    "db:generate": "npx prisma generate",
+    "db:push": "npx prisma db push",
+    "db:seed": "npx prisma db seed",
+    "db:studio": "npx prisma studio"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   },
   "author": "zidane abbas m",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^6.18.0",
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "express-validator": "^7.2.1",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.15.2",
+    "prisma": "^6.18.0",
     "zod": "^4.1.12"
   },
   "devDependencies": {

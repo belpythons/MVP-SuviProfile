@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Kursus {
+  id          Int      @id @default(autoincrement())
+  nama_kursus String   @db.VarChar(255)
+  durasi      String   @db.VarChar(100)
+  gambar_url  String?  @db.VarChar(500)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  // Relations
+  pendaftaran Pendaftaran[]
+
+  @@map("kursus")
+}
+
+model Pendaftaran {
+  id             Int      @id @default(autoincrement())
+  nama_lengkap   String   @db.VarChar(255)
+  email          String   @db.VarChar(255)
+  kursus_id      Int
+  tanggal_daftar DateTime @default(now())
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+
+  // Relations
+  kursus Kursus @relation(fields: [kursus_id], references: [id], onDelete: Cascade)
+
+  // Unique constraint
+  @@unique([email, kursus_id], name: "unique_email_course")
+  @@map("pendaftaran")
+}
