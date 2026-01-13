@@ -20,6 +20,7 @@
     "db:generate": "npx prisma generate",
     "db:push": "npx prisma db push",
     "db:seed": "npx prisma db seed",
+    "db:reset": "prisma migrate reset",
     "db:studio": "npx prisma studio"
   },
   "prisma": {
