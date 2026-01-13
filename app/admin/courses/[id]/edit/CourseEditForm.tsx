@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import {
     Save,
     Loader2,
@@ -11,9 +12,12 @@ import {
     ArrowLeft,
     CheckCircle,
     AlertCircle,
+    ImageIcon,
+    X,
 } from "lucide-react";
 import Link from "next/link";
 import { updateCourse } from "@/app/admin/courses/actions";
+import { UploadButton } from "@/lib/uploadthing";
 
 interface CourseEditFormProps {
     course: {
@@ -42,6 +46,7 @@ export function CourseEditForm({ course }: CourseEditFormProps) {
     const [gambar_url, setGambarUrl] = useState(course.gambar_url);
     const [syllabus, setSyllabus] = useState<string[]>(course.syllabus);
     const [is_active, setIsActive] = useState(course.is_active);
+    const [isUploading, setIsUploading] = useState(false);
 
     const addSyllabusItem = () => {
         setSyllabus([...syllabus, ""]);
@@ -146,32 +151,84 @@ export function CourseEditForm({ course }: CourseEditFormProps) {
                     />
                 </div>
 
-                {/* Price & Image */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Harga (Rp)
-                        </label>
-                        <input
-                            type="number"
-                            value={harga}
-                            onChange={(e) => setHarga(e.target.value)}
-                            placeholder="1500000"
-                            className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-400 focus:ring-4 focus:ring-purple-100 outline-none transition-all"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                            URL Gambar
-                        </label>
-                        <input
-                            type="text"
-                            value={gambar_url}
-                            onChange={(e) => setGambarUrl(e.target.value)}
-                            placeholder="/uploads/courses/image.jpg"
-                            className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-400 focus:ring-4 focus:ring-purple-100 outline-none transition-all"
-                        />
-                    </div>
+                {/* Price */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Harga (Rp)
+                    </label>
+                    <input
+                        type="number"
+                        value={harga}
+                        onChange={(e) => setHarga(e.target.value)}
+                        placeholder="1500000"
+                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-400 focus:ring-4 focus:ring-purple-100 outline-none transition-all"
+                    />
+                </div>
+
+                {/* Course Image Upload */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Gambar Kursus
+                    </label>
+
+                    {/* Image Preview */}
+                    {gambar_url ? (
+                        <div className="relative mb-4">
+                            <div className="relative w-full aspect-video rounded-xl overflow-hidden border-2 border-gray-200">
+                                <Image
+                                    src={gambar_url}
+                                    alt="Preview gambar kursus"
+                                    fill
+                                    className="object-cover"
+                                />
+                            </div>
+                            <button
+                                type="button"
+                                onClick={() => setGambarUrl("")}
+                                className="absolute top-2 right-2 p-2 rounded-full bg-red-500 hover:bg-red-600 text-white shadow-lg transition-colors"
+                            >
+                                <X className="w-4 h-4" />
+                            </button>
+                            <p className="mt-2 text-xs text-gray-500 truncate">{gambar_url}</p>
+                        </div>
+                    ) : (
+                        <div className="mb-4 flex flex-col items-center justify-center p-8 border-2 border-dashed border-gray-300 rounded-xl bg-gray-50">
+                            <ImageIcon className="w-12 h-12 text-gray-400 mb-2" />
+                            <p className="text-sm text-gray-500">Belum ada gambar</p>
+                        </div>
+                    )}
+
+                    {/* Upload Button */}
+                    <UploadButton
+                        endpoint="courseImageUploader"
+                        onUploadBegin={() => setIsUploading(true)}
+                        onClientUploadComplete={(res) => {
+                            setIsUploading(false);
+                            if (res && res[0]) {
+                                setGambarUrl(res[0].ufsUrl);
+                                setMessage({ type: "success", text: "Gambar berhasil diupload!" });
+                            }
+                        }}
+                        onUploadError={(error: Error) => {
+                            setIsUploading(false);
+                            setMessage({ type: "error", text: `Upload gagal: ${error.message}` });
+                        }}
+                        appearance={{
+                            button: `px-4 py-3 rounded-xl font-medium transition-all ${isUploading
+                                    ? "bg-gray-400 cursor-not-allowed"
+                                    : "bg-purple-600 hover:bg-purple-700 text-white"
+                                }`,
+                            allowedContent: "text-xs text-gray-500 mt-2",
+                        }}
+                        content={{
+                            button({ ready, isUploading }) {
+                                if (isUploading) return "Mengupload...";
+                                if (ready) return gambar_url ? "Ganti Gambar" : "Upload Gambar";
+                                return "Memuat...";
+                            },
+                            allowedContent: "PNG, JPG, WEBP (Max 4MB)",
+                        }}
+                    />
                 </div>
 
                 {/* Active Toggle */}

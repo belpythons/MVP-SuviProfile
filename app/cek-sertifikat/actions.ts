@@ -1,6 +1,8 @@
 "use server";
 
+import { headers } from "next/headers";
 import { db } from "@/lib/db";
+import { checkRateLimit, getClientIP } from "@/lib/rate-limit";
 
 export interface CertificateResult {
     found: boolean;
@@ -11,11 +13,30 @@ export interface CertificateResult {
         tanggalLulus: Date;
     };
     error?: string;
+    rateLimited?: boolean;
 }
 
 export async function verifyCertificate(
     query: string
 ): Promise<CertificateResult> {
+    // Get client IP for rate limiting
+    const headersList = await headers();
+    const clientIP = getClientIP(headersList);
+
+    // Check rate limit (5 requests per 10 minutes)
+    const rateLimit = checkRateLimit(`cert-check:${clientIP}`, {
+        maxRequests: 5,
+        windowMs: 10 * 60 * 1000, // 10 minutes
+    });
+
+    if (!rateLimit.allowed) {
+        return {
+            found: false,
+            error: rateLimit.error || "Terlalu banyak percobaan. Silakan coba lagi nanti.",
+            rateLimited: true,
+        };
+    }
+
     if (!query || query.trim().length < 3) {
         return {
             found: false,
@@ -60,3 +81,4 @@ export async function verifyCertificate(
         };
     }
 }
+

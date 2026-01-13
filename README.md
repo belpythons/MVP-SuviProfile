@@ -66,6 +66,7 @@
 | **MySQL** | 8.x | Relational database |
 | **NextAuth.js** | 5.0 (Beta) | Authentication with Credentials provider |
 | **bcryptjs** | 3.x | Password hashing |
+| **Uploadthing** | Latest | Cloud image storage (Vercel-compatible) |
 
 ### Development Tools
 | Technology | Purpose |
@@ -82,8 +83,11 @@ MVP-SuviProfile/
 │   ├── admin/              # Protected admin routes
 │   │   ├── courses/        # Course management (CRUD)
 │   │   ├── dashboard/      # Admin dashboard
-│   │   └── leads/          # Lead management
-│   ├── api/auth/           # NextAuth API routes
+│   │   ├── leads/          # Lead management
+│   │   └── testimonials/   # Testimonial management
+│   ├── api/
+│   │   ├── auth/           # NextAuth API routes
+│   │   └── uploadthing/    # Image upload API
 │   ├── auth/               # Login page
 │   ├── cek-sertifikat/     # Certificate verification page
 │   ├── kursus/[slug]/      # Dynamic course detail page
@@ -97,11 +101,13 @@ MVP-SuviProfile/
 │   └── ...
 ├── lib/                    # Utility functions
 │   ├── db.ts               # Prisma client singleton
+│   ├── uploadthing.ts      # Uploadthing client components
+│   ├── rate-limit.ts       # Rate limiting utility
 │   └── utils.ts            # Helper utilities
 ├── prisma/
 │   └── schema.prisma       # Database schema
-├── public/
-│   └── uploads/courses/    # Course images
+├── docs/                   # Documentation
+│   └── ADMIN_MANUAL.md     # Admin user guide
 ├── scripts/
 │   └── seed-scrape.ts      # Database seeding script
 ├── auth.ts                 # NextAuth configuration
@@ -136,22 +142,32 @@ npm install
 
 ### Step 3: Configure Environment Variables
 
-Create a `.env` file in the root directory:
+Copy the example environment file and fill in the values:
+
+```bash
+cp .env.example .env
+```
+
+Required environment variables:
 
 ```env
-# Database Connection
-# Format: mysql://USER:PASSWORD@HOST:PORT/DATABASE
+# Database Connection (MySQL)
 DATABASE_URL="mysql://root:yourpassword@localhost:3306/suvi_training"
 
 # NextAuth Configuration
 AUTH_SECRET="your-super-secret-key-min-32-characters"
 AUTH_URL="http://localhost:3000"
-
-# Optional: NextAuth Trust Host (for production)
 AUTH_TRUST_HOST=true
+
+# Uploadthing (Image Upload Service)
+# Get your token from: https://uploadthing.com/dashboard
+UPLOADTHING_TOKEN="your-uploadthing-token-here"
 ```
 
-> ⚠️ **Important**: The `DATABASE_URL` must use the `mysql://` protocol. Do not use `prisma://` unless you're using Prisma Accelerate.
+> ⚠️ **Important**: 
+> - `DATABASE_URL` must use the `mysql://` protocol
+> - Get `UPLOADTHING_TOKEN` from [uploadthing.com](https://uploadthing.com)
+> - Generate `AUTH_SECRET` with: `openssl rand -base64 32`
 
 ### Step 4: Setup the Database
 
@@ -191,6 +207,51 @@ VALUES (
 ```
 
 Or create a seeder script to add an admin.
+
+---
+
+## 🚀 Deployment to Vercel
+
+### Prerequisites
+
+1. A [Vercel](https://vercel.com) account
+2. A MySQL database accessible from the internet (e.g., PlanetScale, Railway, or Aiven)
+3. An [Uploadthing](https://uploadthing.com) account for image storage
+
+### Deployment Steps
+
+1. **Push to GitHub**
+   ```bash
+   git add .
+   git commit -m "Ready for deployment"
+   git push origin main
+   ```
+
+2. **Import to Vercel**
+   - Go to [vercel.com/new](https://vercel.com/new)
+   - Import your GitHub repository
+   - Vercel will auto-detect Next.js
+
+3. **Configure Environment Variables**
+   In the Vercel dashboard, add these environment variables:
+   | Variable | Value |
+   |----------|-------|
+   | `DATABASE_URL` | Your production MySQL connection string |
+   | `AUTH_SECRET` | Your generated secret key |
+   | `AUTH_URL` | `https://your-domain.vercel.app` |
+   | `AUTH_TRUST_HOST` | `true` |
+   | `UPLOADTHING_TOKEN` | Your Uploadthing token |
+
+4. **Deploy**
+   - Click "Deploy"
+   - Vercel will build and deploy automatically
+
+5. **Run Database Migrations**
+   ```bash
+   npx prisma db push
+   ```
+
+> 💡 **Tip**: For the database, we recommend [PlanetScale](https://planetscale.com) (free tier available) or [Railway](https://railway.app) for MySQL hosting.
 
 ---
 
