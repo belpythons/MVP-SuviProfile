@@ -1,4 +1,5 @@
-import { Sparkles } from "lucide-react";
+import { Sparkles, Star, Quote } from "lucide-react";
+import Image from "next/image";
 import { db } from "@/lib/db";
 import { HeroSection } from "@/components/HeroSection";
 import { CourseCard } from "@/components/CourseCard";
@@ -13,6 +14,16 @@ type Course = {
   durasi: string;
   harga: ReturnType<typeof Number> | null;
   gambar_url: string | null;
+};
+
+// Type for testimonial data
+type Testimonial = {
+  id: number;
+  nama_siswa: string;
+  pekerjaan: string | null;
+  isi_review: string;
+  rating: number;
+  foto_url: string | null;
 };
 
 async function getCourses(): Promise<Course[]> {
@@ -31,8 +42,23 @@ async function getCourses(): Promise<Course[]> {
   }
 }
 
+async function getTestimonials(): Promise<Testimonial[]> {
+  try {
+    const testimonials = await db.testimoni.findMany({
+      where: { is_active: true },
+      orderBy: { created_at: "desc" },
+      take: 6,
+    });
+    return testimonials;
+  } catch (error) {
+    console.error("Testimonials fetch error:", error);
+    return [];
+  }
+}
+
 export default async function HomePage() {
   const courses = await getCourses();
+  const testimonials = await getTestimonials();
 
   return (
     <main className="min-h-screen bg-white">
@@ -159,6 +185,91 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Testimonials Section */}
+      {testimonials.length > 0 && (
+        <section className="py-20 bg-gradient-to-b from-white to-purple-50">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Section Header */}
+            <div className="max-w-2xl mx-auto text-center mb-12">
+              <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-purple-100/80 border border-purple-200/50">
+                <Quote className="w-4 h-4 text-purple-600" />
+                <span className="text-sm font-medium text-purple-700">
+                  Testimoni
+                </span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900">
+                Apa Kata Alumni
+              </h2>
+              <p className="mt-4 text-lg text-gray-600">
+                Dengarkan pengalaman langsung dari alumni yang telah sukses
+                meningkatkan skill mereka bersama Suvi Training
+              </p>
+            </div>
+
+            {/* Testimonials Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {testimonials.map((testimonial) => (
+                <div
+                  key={testimonial.id}
+                  className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                >
+                  {/* Quote Icon */}
+                  <Quote className="w-8 h-8 text-purple-200 mb-4" />
+
+                  {/* Review Text */}
+                  <p className="text-gray-600 leading-relaxed mb-6 line-clamp-4">
+                    &ldquo;{testimonial.isi_review}&rdquo;
+                  </p>
+
+                  {/* Rating */}
+                  <div className="flex items-center gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`w-4 h-4 ${i < testimonial.rating
+                            ? "text-amber-400 fill-amber-400"
+                            : "text-gray-300"
+                          }`}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Author */}
+                  <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+                    {testimonial.foto_url ? (
+                      <div className="relative w-12 h-12 rounded-full overflow-hidden">
+                        <Image
+                          src={testimonial.foto_url}
+                          alt={testimonial.nama_siswa}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
+                        <span className="text-white font-bold text-lg">
+                          {testimonial.nama_siswa.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                    )}
+                    <div>
+                      <p className="font-semibold text-gray-900">
+                        {testimonial.nama_siswa}
+                      </p>
+                      {testimonial.pekerjaan && (
+                        <p className="text-sm text-gray-500">
+                          {testimonial.pekerjaan}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA Section */}
       <section className="py-20">
