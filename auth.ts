@@ -2,8 +2,21 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
+import { authConfig } from "./auth.config";
 
+/**
+ * Full NextAuth configuration with providers
+ * 
+ * This file runs in Node.js runtime only (NOT Edge).
+ * It imports Prisma and bcrypt for actual authentication.
+ * 
+ * The middleware uses auth.config.ts instead (Edge-compatible).
+ */
 export const { handlers, signIn, signOut, auth } = NextAuth({
+    // Spread the Edge-compatible config
+    ...authConfig,
+
+    // Providers with database access (Node.js only)
     providers: [
         Credentials({
             name: "credentials",
@@ -46,40 +59,4 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
         }),
     ],
-    pages: {
-        signIn: "/auth/login",
-    },
-    session: {
-        strategy: "jwt",
-    },
-    callbacks: {
-        async jwt({ token, user }) {
-            if (user) {
-                token.id = user.id;
-            }
-            return token;
-        },
-        async session({ session, token }) {
-            if (session.user) {
-                session.user.id = token.id as string;
-            }
-            return session;
-        },
-        async authorized({ auth, request: { nextUrl } }) {
-            const isLoggedIn = !!auth?.user;
-            const isOnAdmin = nextUrl.pathname.startsWith("/admin");
-            const isOnAuth = nextUrl.pathname.startsWith("/auth");
-
-            if (isOnAdmin) {
-                if (isLoggedIn) return true;
-                return false; // Redirect to login
-            }
-
-            if (isOnAuth && isLoggedIn) {
-                return Response.redirect(new URL("/admin/dashboard", nextUrl));
-            }
-
-            return true;
-        },
-    },
 });
