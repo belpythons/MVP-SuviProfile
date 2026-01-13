@@ -1,0 +1,107 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// Admin Model - CMS Authentication
+// ============================================
+model Admin {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique @db.VarChar(255)
+  password   String   @db.VarChar(255) // Hashed with bcrypt
+  name       String   @db.VarChar(255)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("admins")
+}
+
+// ============================================
+// Kursus Model - Course/Training Programs
+// ============================================
+model Kursus {
+  id          Int       @id @default(autoincrement())
+  judul       String    @db.VarChar(255)
+  slug        String    @unique @db.VarChar(255)
+  deskripsi   String?   @db.Text
+  kategori    String    @db.VarChar(100)
+  durasi      String    @db.VarChar(100)
+  harga       Decimal?  @db.Decimal(12, 2)
+  gambar_url  String?   @db.VarChar(500)
+  syllabus    Json?     // Array of syllabus topics
+  is_active   Boolean   @default(true)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  // Relations
+  leads Lead[]
+
+  @@map("kursus")
+}
+
+// ============================================
+// Lead Model - Prospective Student Registrations
+// ============================================
+model Lead {
+  id                Int        @id @default(autoincrement())
+  nama              String     @db.VarChar(255)
+  no_wa             String     @db.VarChar(20)
+  pilihan_kursus_id Int?
+  source            String?    @db.VarChar(100) // e.g., "WhatsApp Button", "Form"
+  catatan           String?    @db.Text
+  status            LeadStatus @default(NEW)
+  created_at        DateTime   @default(now())
+  updated_at        DateTime   @updatedAt
+
+  // Relations
+  pilihan_kursus Kursus? @relation(fields: [pilihan_kursus_id], references: [id], onDelete: SetNull)
+
+  @@map("leads")
+}
+
+enum LeadStatus {
+  NEW
+  FOLLOWED_UP
+  CONVERTED
+  CLOSED
+}
+
+// ============================================
+// Sertifikat Model - Alumni Certificates for Verification
+// ============================================
+model Sertifikat {
+  id               Int      @id @default(autoincrement())
+  nama             String   @db.VarChar(255)
+  nomor_sertifikat String   @unique @db.VarChar(100)
+  kompetensi       String   @db.VarChar(255)
+  tanggal_lulus    DateTime
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  @@map("sertifikat")
+}
+
+// ============================================
+// Testimoni Model - Alumni Reviews/Testimonials
+// ============================================
+model Testimoni {
+  id         Int      @id @default(autoincrement())
+  nama_siswa String   @db.VarChar(255)
+  pekerjaan  String?  @db.VarChar(255)
+  isi_review String   @db.Text
+  rating     Int      @default(5)
+  foto_url   String?  @db.VarChar(500)
+  is_active  Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("testimoni")
+}
