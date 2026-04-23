@@ -205,7 +205,7 @@ export function CourseEditForm({ course }: CourseEditFormProps) {
                         onClientUploadComplete={(res) => {
                             setIsUploading(false);
                             if (res && res[0]) {
-                                setGambarUrl(res[0].ufsUrl);
+                                setGambarUrl(res[0].url);
                                 setMessage({ type: "success", text: "Gambar berhasil diupload!" });
                             }
                         }}

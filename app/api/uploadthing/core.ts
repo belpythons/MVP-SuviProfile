@@ -19,8 +19,8 @@ export const ourFileRouter = {
             return {};
         })
         .onUploadComplete(async ({ file }) => {
-            console.log("Upload complete:", file.ufsUrl);
-            return { url: file.ufsUrl };
+            console.log("Upload complete:", file.url);
+            return { url: file.url };
         }),
 
     // Define testimonial photo uploader
@@ -34,8 +34,8 @@ export const ourFileRouter = {
             return {};
         })
         .onUploadComplete(async ({ file }) => {
-            console.log("Testimonial photo uploaded:", file.ufsUrl);
-            return { url: file.ufsUrl };
+            console.log("Testimonial photo uploaded:", file.url);
+            return { url: file.url };
         }),
 } satisfies FileRouter;
 
