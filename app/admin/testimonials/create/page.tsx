@@ -142,7 +142,7 @@ export default function CreateTestimonialPage() {
                                     onClientUploadComplete={(res) => {
                                         setIsUploading(false);
                                         if (res && res[0]) {
-                                            setFotoUrl(res[0].ufsUrl);
+                                            setFotoUrl(res[0].url);
                                         }
                                     }}
                                     onUploadError={(error: Error) => {

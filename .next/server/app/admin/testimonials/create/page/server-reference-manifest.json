@@ -1,0 +1,29 @@
+{
+  "node": {
+    "00b1157180f7a9aa1d10f519490c670eb13261c434": {
+      "workers": {
+        "app/admin/testimonials/create/page": {
+          "moduleId": 4547,
+          "async": false,
+          "exportedName": "$$RSC_SERVER_ACTION_0",
+          "filename": "app/admin/layout.tsx"
+        }
+      },
+      "exportedName": "$$RSC_SERVER_ACTION_0",
+      "filename": "app/admin/layout.tsx"
+    },
+    "40bad0b369a80d66467aa95a479d327b114dcf17af": {
+      "workers": {
+        "app/admin/testimonials/create/page": {
+          "moduleId": 4547,
+          "async": false,
+          "exportedName": "createTestimonial",
+          "filename": "app/admin/testimonials/actions.ts"
+        }
+      },
+      "exportedName": "createTestimonial",
+      "filename": "app/admin/testimonials/actions.ts"
+    }
+  },
+  "edge": {}
+}

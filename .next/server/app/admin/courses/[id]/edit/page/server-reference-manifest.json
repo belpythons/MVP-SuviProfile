@@ -1,0 +1,29 @@
+{
+  "node": {
+    "00b1157180f7a9aa1d10f519490c670eb13261c434": {
+      "workers": {
+        "app/admin/courses/[id]/edit/page": {
+          "moduleId": 48743,
+          "async": false,
+          "exportedName": "$$RSC_SERVER_ACTION_0",
+          "filename": "app/admin/layout.tsx"
+        }
+      },
+      "exportedName": "$$RSC_SERVER_ACTION_0",
+      "filename": "app/admin/layout.tsx"
+    },
+    "606043800d547ee3e45cb823b919874862d3bd58a5": {
+      "workers": {
+        "app/admin/courses/[id]/edit/page": {
+          "moduleId": 48743,
+          "async": false,
+          "exportedName": "updateCourse",
+          "filename": "app/admin/courses/actions.ts"
+        }
+      },
+      "exportedName": "updateCourse",
+      "filename": "app/admin/courses/actions.ts"
+    }
+  },
+  "edge": {}
+}

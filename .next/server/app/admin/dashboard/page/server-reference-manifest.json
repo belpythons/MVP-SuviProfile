@@ -1,0 +1,17 @@
+{
+  "node": {
+    "00b1157180f7a9aa1d10f519490c670eb13261c434": {
+      "workers": {
+        "app/admin/dashboard/page": {
+          "moduleId": 77735,
+          "async": false,
+          "exportedName": "$$RSC_SERVER_ACTION_0",
+          "filename": "app/admin/layout.tsx"
+        }
+      },
+      "exportedName": "$$RSC_SERVER_ACTION_0",
+      "filename": "app/admin/layout.tsx"
+    }
+  },
+  "edge": {}
+}

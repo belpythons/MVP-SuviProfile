@@ -1,0 +1,17 @@
+{
+  "node": {
+    "405d94fa350cb8dbcd8d90ddf9b5bae12fbb24365b": {
+      "workers": {
+        "app/kursus/[slug]/page": {
+          "moduleId": 44163,
+          "async": false,
+          "exportedName": "createLead",
+          "filename": "lib/actions/leads.ts"
+        }
+      },
+      "exportedName": "createLead",
+      "filename": "lib/actions/leads.ts"
+    }
+  },
+  "edge": {}
+}

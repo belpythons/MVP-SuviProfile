@@ -1,0 +1,17 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/admin/courses/[id]/edit/page": "app/admin/courses/[id]/edit/page.js",
+  "/admin/courses/page": "app/admin/courses/page.js",
+  "/admin/dashboard/page": "app/admin/dashboard/page.js",
+  "/admin/leads/page": "app/admin/leads/page.js",
+  "/admin/testimonials/create/page": "app/admin/testimonials/create/page.js",
+  "/admin/testimonials/page": "app/admin/testimonials/page.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/api/uploadthing/route": "app/api/uploadthing/route.js",
+  "/auth/login/page": "app/auth/login/page.js",
+  "/cek-sertifikat/page": "app/cek-sertifikat/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/kursus/[slug]/page": "app/kursus/[slug]/page.js",
+  "/page": "app/page.js"
+}

@@ -1,0 +1,17 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/admin/courses/[id]/edit/page": "/admin/courses/[id]/edit",
+  "/admin/courses/page": "/admin/courses",
+  "/admin/dashboard/page": "/admin/dashboard",
+  "/admin/leads/page": "/admin/leads",
+  "/admin/testimonials/create/page": "/admin/testimonials/create",
+  "/admin/testimonials/page": "/admin/testimonials",
+  "/api/auth/[...nextauth]/route": "/api/auth/[...nextauth]",
+  "/api/uploadthing/route": "/api/uploadthing",
+  "/auth/login/page": "/auth/login",
+  "/cek-sertifikat/page": "/cek-sertifikat",
+  "/favicon.ico/route": "/favicon.ico",
+  "/kursus/[slug]/page": "/kursus/[slug]",
+  "/page": "/"
+}
