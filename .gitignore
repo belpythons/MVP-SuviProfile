@@ -14,7 +14,7 @@
 /coverage
 
 # next.js
-/.next/
+# /.next/  <-- BARIS INI SUDAH DIJADIKAN KOMENTAR AGAR BISA DI-PUSH
 /out/
 
 # production

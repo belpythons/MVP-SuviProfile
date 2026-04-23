@@ -1,0 +1,17 @@
+{
+  "node": {
+    "40bb9353423e814d5d3caf1f0c9b3f00a550d485fd": {
+      "workers": {
+        "app/cek-sertifikat/page": {
+          "moduleId": 20047,
+          "async": false,
+          "exportedName": "verifyCertificate",
+          "filename": "app/cek-sertifikat/actions.ts"
+        }
+      },
+      "exportedName": "verifyCertificate",
+      "filename": "app/cek-sertifikat/actions.ts"
+    }
+  },
+  "edge": {}
+}

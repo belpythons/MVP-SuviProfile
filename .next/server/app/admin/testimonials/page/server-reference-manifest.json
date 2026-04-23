@@ -1,0 +1,77 @@
+{
+  "node": {
+    "00b1157180f7a9aa1d10f519490c670eb13261c434": {
+      "workers": {
+        "app/admin/testimonials/page": {
+          "moduleId": 21002,
+          "async": false,
+          "exportedName": "$$RSC_SERVER_ACTION_0",
+          "filename": "app/admin/layout.tsx"
+        }
+      },
+      "exportedName": "$$RSC_SERVER_ACTION_0",
+      "filename": "app/admin/layout.tsx"
+    },
+    "405b5362f4d3507ed7da4cea5b11c781eae7b8ce17": {
+      "workers": {
+        "app/admin/testimonials/page": {
+          "moduleId": 21002,
+          "async": false,
+          "exportedName": "$$RSC_SERVER_ACTION_0",
+          "filename": "app/admin/testimonials/page.tsx"
+        }
+      },
+      "exportedName": "$$RSC_SERVER_ACTION_0",
+      "filename": "app/admin/testimonials/page.tsx"
+    },
+    "4099fef96e100ab923d1b33917fdadadbe2cc48a5d": {
+      "workers": {
+        "app/admin/testimonials/page": {
+          "moduleId": 21002,
+          "async": false,
+          "exportedName": "$$RSC_SERVER_ACTION_1",
+          "filename": "app/admin/testimonials/page.tsx"
+        }
+      },
+      "exportedName": "$$RSC_SERVER_ACTION_1",
+      "filename": "app/admin/testimonials/page.tsx"
+    },
+    "400d144d8b348d33baad781c50f032fcec0fd36fae": {
+      "workers": {
+        "app/admin/testimonials/page": {
+          "moduleId": 21002,
+          "async": false,
+          "exportedName": "toggleTestimonialStatus",
+          "filename": "app/admin/testimonials/actions.ts"
+        }
+      },
+      "exportedName": "toggleTestimonialStatus",
+      "filename": "app/admin/testimonials/actions.ts"
+    },
+    "40bad0b369a80d66467aa95a479d327b114dcf17af": {
+      "workers": {
+        "app/admin/testimonials/page": {
+          "moduleId": 21002,
+          "async": false,
+          "exportedName": "createTestimonial",
+          "filename": "app/admin/testimonials/actions.ts"
+        }
+      },
+      "exportedName": "createTestimonial",
+      "filename": "app/admin/testimonials/actions.ts"
+    },
+    "40c810150e056383bb1cd24c508caad410a88f5297": {
+      "workers": {
+        "app/admin/testimonials/page": {
+          "moduleId": 21002,
+          "async": false,
+          "exportedName": "deleteTestimonial",
+          "filename": "app/admin/testimonials/actions.ts"
+        }
+      },
+      "exportedName": "deleteTestimonial",
+      "filename": "app/admin/testimonials/actions.ts"
+    }
+  },
+  "edge": {}
+}
